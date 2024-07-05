@@ -20,13 +20,4 @@ public class TrieNode {
         this.isKey = false;
         this.next = new HashMap<>();
     }
-    public String inOrden(){
-        
-        return "";
-    }
-
-    public String i(){
-        
-        return "";
-    }
 }
