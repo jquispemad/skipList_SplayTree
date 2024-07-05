@@ -24,7 +24,7 @@ public class SplayTree<E extends Comparable<E>> extends BST<E> {
             NodeSplay grandParent = (NodeSplay) (parent != null ? parentSplay(parent) : null);
 
             if (parent == null) {
-                break;
+                return;
             }
 
             if (grandParent == null) {
@@ -133,7 +133,7 @@ public class SplayTree<E extends Comparable<E>> extends BST<E> {
 
     public void inOrden() {
         if (this.isEmpty())
-            System.out.println("Arbol esta vacio....");
+            System.out.println("Arbol esta vacio");
         else
             inOrden((NodeSplay) this.getHead());
         System.out.println();
