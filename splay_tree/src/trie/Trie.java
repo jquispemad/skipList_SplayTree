@@ -1,6 +1,7 @@
 package trie;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class Trie {
     private TrieNode root; //cabeza
@@ -66,6 +67,48 @@ public class Trie {
         if (search(anterior)) {
             delete(anterior);
             insert(nuevo);
+        }
+    }
+    //crear un mapa de frecuencia
+    public Map<String, Integer> getFrecuenciaMap() {
+        Map<String, Integer> frecuenciaMap = new HashMap<>(); //crea mapa para guardar las frecuencias
+        mapFrecuencyPush(root, "", frecuenciaMap);//comienza a llenar el mapa
+        return frecuenciaMap;
+    }
+
+    //llenar el mapa de frecuencia
+    private void mapFrecuencyPush(TrieNode node, String prefix, Map<String, Integer> frecuenciaMap) {
+        if (node.isKey) {//aumenta en el mapa la palabra si hay 3 o mas compara el menor lo borra y luego lo reemplaza por otro caso contrario no hace nada
+            if (frecuenciaMap.size() >= 3) {
+                String keyMin = null;
+                Integer dataMin = Integer.MAX_VALUE;
+                for (Entry<String, Integer> frec : frecuenciaMap.entrySet()) {
+                    if (dataMin > frec.getValue()) {
+                        dataMin = frec.getValue();
+                        keyMin  = frec.getKey();
+                    }
+                }
+                if (keyMin != null && frecuenciaMap.get(keyMin) < node.frequency) {//si cumple reemplaza
+                    frecuenciaMap.remove(keyMin);//eliminar el valor minimo
+                    frecuenciaMap.put(prefix, node.frequency);//agregar el nuevo valor
+                }
+            }else{//solo aumenta al mapa de 3
+                frecuenciaMap.put(prefix, node.frequency);
+            }  
+        }
+
+        //recorre el mapa
+        for (Map.Entry<Character, TrieNode> a : node.next.entrySet()) {
+            mapFrecuencyPush(a.getValue(), prefix + a.getKey(), frecuenciaMap);
+        }
+    }
+
+    //imprimir el mapa
+    public void printFrequency() {
+        Map<String, Integer> frecuencyMap = getFrecuenciaMap();
+        
+        for (Entry<String, Integer> entry : frecuencyMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
 
